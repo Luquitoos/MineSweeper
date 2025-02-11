@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <time.h>
 #include <locale.h>
+#include <math.h>
 
 #ifdef _WIN32
     #include <windows.h>
@@ -25,9 +26,8 @@ void desenhar_campo(int linhas, int colunas);
 void imprimir_titulo();
 void imprimir_creditos();
 void imprimir_start_game();
-void imprimir_opcao_dimensao(int numero, const char* dimensao);
 void menu_dimensoes();
-void menu_quantidade_minas();
+void menu_quantidade_minas(int linhas, int colunas, int *maxima);
 void executar_menu();
 
 #endif
