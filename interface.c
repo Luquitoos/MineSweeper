@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <time.h>
 #include <locale.h>
+#include <math.h>
+
 #ifdef _WIN32
     #include <windows.h>
 #endif
@@ -14,7 +16,7 @@ void configurar_terminal() {
 }
 
 void limpar_tela() {
-    printf("\033[H\033[J");  /*Move cursor para início e limpa tela*/
+    printf("\033[H\033[J");  /*limpa tela*/
 }
 
 void quadrados() {
@@ -38,11 +40,15 @@ void quadrados_espaco_vazio_ou_numerico(int num_minas_proximas) { /*Cria o quadr
     } else {    
         int cor;
         switch(num_minas_proximas) {
-            case 1: cor = 81;  break;  
-            case 2: cor = 46;  break;  
-            case 3: cor = 214; break;  
-            case 4: cor = 201; break;  
-            default: cor = 15;         
+            case 1: cor = 81;  break;  /*Azul*/
+            case 2: cor = 46;  break;  /* Verde */
+            case 3: cor = 214; break;  /* Vermelho */
+            case 4: cor = 57;  break;  /* Azul escuro */
+            case 5: cor = 124; break;  /* Vermelho escuro */
+            case 6: cor = 37;  break;  /* Ciano */
+            case 7: cor = 53;  break;  /* Roxo */
+            case 8: cor = 240; break;  /* Cinza escuro */
+            default: cor = 15;         /* Branco (caso padrão) */  
         }
         printf("\033[48;5;58;38;5;%dm %d \033[0m", cor, num_minas_proximas);
     }
@@ -67,7 +73,7 @@ void imprimir_coordenadas_superiores(int colunas) { /*Imprime as coodernadas de 
     printf("\n");
 }
 
-void imprimir_linha_horizontal(int colunas) { /*Imprime as coodernadas de linha, que são as Letras, na parte esquerda do campo do campo (FUNÇÃO AUXILIAR DE DESENHAR CAMPO)*/
+void imprimir_linha_horizontal(int colunas) { /*Imprime as linhas que cortam o campo (FUNÇÃO AUXILIAR DE DESENHAR CAMPO)*/
     printf("   \033[38;5;27m╔"); 
     for (int i = 0; i < colunas; i++) {
         printf("═══"); 
@@ -168,42 +174,32 @@ void imprimir_start_game() {
     printf("\033[0m\n");
 }
 
-void imprimir_opcao_dimensao(int numero, const char* dimensao) {
-    printf("\033[38;5;46m");
-    printf("                                ╔════════════════════════════════╗\n");
-    printf("                                ║      %d. %s                  ║\n", numero, dimensao);
-    printf("                                ╚════════════════════════════════╝\n");
-    printf("\033[0m\n");
-}
-
 void menu_dimensoes() {
     limpar_tela();
     printf("\033[38;5;27m");
     printf("\n                  ╔═══════════════════════════════════════════════════════════╗\n");
-    printf("                  ║  Selecione a Dimensão do Campo (Digite a opção de 1 a 7)  ║\n");
+    printf("                  ║  Digite a Dimensão do Campo no Formato (LinhaxColuna):    ║\n");
     printf("                  ╚═══════════════════════════════════════════════════════════╝\n\n");
     printf("\033[0m");
-    
-    imprimir_opcao_dimensao(1, "9x9");
-    imprimir_opcao_dimensao(2, "16x16");
-    imprimir_opcao_dimensao(3, "16x30");
-    imprimir_opcao_dimensao(4, "18x25");
-    imprimir_opcao_dimensao(5, "20x30");
-    imprimir_opcao_dimensao(6, "22x35");
-    imprimir_opcao_dimensao(7, "26x40");
 }
 
-void menu_quantidade_minas() {
+void menu_quantidade_minas(int linhas, int colunas, int *maxima) {
     limpar_tela();
+    
+    if (floor((linhas*colunas)/5) > 7){
+        *maxima = floor((linhas*colunas)/5);
+    }   
+    
     printf("\033[38;5;46m"); 
     printf("\n                                ╔══════════════════════════════════╗\n");
-    printf("                                ║ Digite o número de minas (1-35): ║\n");
+    printf("                                ║ Digite o número de minas (7-%d): ║\n", *maxima);
     printf("                                ╚══════════════════════════════════╝\n");
     printf("\033[0m\n");
 }
 
 void executar_menu() {
-    int opcao, dimensao, minas;
+    int opcao, dimensao, minas, linhas, colunas;
+    int maxima = 7;
 
     do {
         configurar_terminal();
@@ -217,30 +213,36 @@ void executar_menu() {
         if (opcao == 1) {
             do {
                 menu_dimensoes();
-                scanf("%d", &dimensao);
+                char input[10];
+                int conversao = 0;
+                
+                fflush(stdin); /* Limpa o buffer de entrada antes de ler*/
+                
+                if (fgets(input, sizeof(input), stdin) != NULL) { /* Lê a entrada como string*/
+
+                    conversao = sscanf(input, "%dx%d", &linhas, &colunas);  /*Tenta converter a entrada no formato desejado*/
+                }
+                
                 limpar_tela();
-            } while (dimensao < 1 || dimensao > 7);
+                
+                /* Se a conversão não resultou em 2 números ou os números estão fora do intervalo*/
+                if (conversao != 2) {
+                    printf("\033[38;5;196mFormato inválido. Use o formato LinhaxColuna (exemplo: 5x5)\033[0m\n");
+                    delay_ms(1500); /*Pequeno delay para a mensagem ser visível*/
+                }
+                
+            } while (linhas < 5 || colunas < 5 || linhas > 26 || colunas > 40);
 
             do {
-                menu_quantidade_minas();
+                menu_quantidade_minas(linhas, colunas, &maxima);
                 scanf("%d", &minas);
                 limpar_tela();
-            } while (minas < 1 || minas > 35);
-
-            int linhas, colunas;
-            switch (dimensao) {
-                case 1: linhas = 9; colunas = 9; break;
-                case 2: linhas = 16; colunas = 16; break;
-                case 3: linhas = 16; colunas = 30; break;
-                case 4: linhas = 18; colunas = 25; break;
-                case 5: linhas = 20; colunas = 30; break;
-                case 6: linhas = 22; colunas = 35; break;
-                case 7: linhas = 26; colunas = 40; break;
-                default: linhas = 9; colunas = 9;
-            }
+            } while (minas < 7 || minas > maxima);
 
             desenhar_campo(linhas, colunas);
-            break; /*Seria a partir daqui a implementacao da estrutura de dados, voce vai tirar esse break e comecar a implementacao usando as funcoes de interface que criei
+            break; 
+            
+            /*Seria a partir daqui a implementacao da estrutura de dados, voce vai tirar esse break e comecar a implementacao usando as funcoes de interface que criei
             
             Aqui depois que o campo foi criado voce irá associar//distribuir os nós na matriz criada (com a informaçao se é bomba ou não)
             
