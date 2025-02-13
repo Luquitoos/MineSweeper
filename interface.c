@@ -107,7 +107,7 @@ void cabeca_jogo() {
     printf("     ██║  ██║██╔══██╗██║   ██║██╔════╝    ██╔════╝██║   ██║████╗  ██║   ║ Open: [Letter][Number]    ║\n");
     printf("     ███████║███████║██║   ██║█████╗      █████╗  ██║   ██║██╔██╗ ██║   ║ Flag: #[Letter][Number]   ║\n");
     printf("     ██╔══██║██╔══██║╚██╗ ██╔╝██╔══╝      ██╔══╝  ██║   ██║██║╚██╗██║   ║ Unflag: ![Letter][Number] ║\n");
-    printf("     ██║  ██║██║  ██║ ╚████╔╝ ███████╗    ██║     ╚██████╔╝██║ ╚████║   ║ Tip: ?[Letter][Number]    ║\n");
+    printf("     ██║  ██║██║  ██║ ╚████╔╝ ███████╗    ██║     ╚██████╔╝██║ ╚████║   ║ Tip: Press Enter          ║\n");
     printf("     ╚═╝  ╚═╝╚═╝  ╚═╝  ╚═══╝  ╚══════╝    ╚═╝      ╚═════╝ ╚═╝  ╚═══╝   ╚═══════════════════════════╝\n");
     printf("\033[0m\n");
 }
@@ -147,13 +147,13 @@ void desenhar_campo(int linhas, int colunas) { /*Cria o Campo Minado (A interfac
 void imprimir_titulo() {
     printf("\033[38;5;226m");
     printf("\n");
-    printf("     ███╗   ███╗██╗███╗   ██╗███████╗███████╗██╗    ██╗███████╗███████╗██████╗ ███████╗██████╗  \n");
-    printf("     ████╗ ████║██║████╗  ██║██╔════╝██╔════╝██║    ██║██╔════╝██╔════╝██╔══██╗██╔═══ ╝██╔══██╗ \n");
-    printf("     ██╔████╔██║██║██╔██╗ ██║█████╗  ███████╗██║ █╗ ██║█████╗  █████╗  ██████╔╝█████╗  ██████╔╝ \n");
-    printf("     ██║╚██╔╝██║██║██║╚██╗██║██╔══╝  ╚════██║██║███╗██║██╔══╝  ██╔══╝  ██╔═══╝ ██╔══╝  ██╔══██╗  \n");
-    printf("     ██║ ╚═╝ ██║██║██║ ╚████║███████╗███████║╚███╔███╔╝███████╗███████╗██║     ███████╗██║  ██║   \n");
-    printf("     ╚═╝     ╚═╝╚═╝╚═╝  ╚═══╝╚══════╝╚══════╝ ╚══╝╚══╝ ╚══════╝╚══════╝╚═╝     ╚══════╝╚═╝  ╚═╝  \n");
-    printf("                                                UFC                                                       \n");
+    printf("     ███╗   ███╗██╗███╗   ██╗███████╗███████╗██╗    ██╗███████╗███████╗██████╗ ███████╗██████╗\n");
+    printf("     ████╗ ████║██║████╗  ██║██╔════╝██╔════╝██║    ██║██╔════╝██╔════╝██╔══██╗██╔═══ ╝██╔══██╗\n");
+    printf("     ██╔████╔██║██║██╔██╗ ██║█████╗  ███████╗██║ █╗ ██║█████╗  █████╗  ██████╔╝█████╗  ██████╔╝\n");
+    printf("     ██║╚██╔╝██║██║██║╚██╗██║██╔══╝  ╚════██║██║███╗██║██╔══╝  ██╔══╝  ██╔═══╝ ██╔══╝  ██╔══██╗\n");
+    printf("     ██║ ╚═╝ ██║██║██║ ╚████║███████╗███████║╚███╔███╔╝███████╗███████╗██║     ███████╗██║  ██║\n");
+    printf("     ╚═╝     ╚═╝╚═╝╚═╝  ╚═══╝╚══════╝╚══════╝ ╚══╝╚══╝ ╚══════╝╚══════╝╚═╝     ╚══════╝╚═╝  ╚═╝\n");
+    printf("                                                UFC\n");
     printf("\033[0m\n");
 }
 
@@ -208,7 +208,19 @@ void executar_menu() {
         imprimir_creditos();
         imprimir_start_game();
         
-        scanf("%d", &opcao);
+        char input[10];
+        int leitura_valida = 0;
+    
+        fflush(stdin); /*Limpa o buffer de entrada antes de ler*/
+
+        if (fgets(input, sizeof(input), stdin) != NULL) { /*Lê a entrada como string*/
+            leitura_valida = sscanf(input, "%d", &opcao); /*Tenta converter a entrada no formato desejado retornando a quantidade do formato desejado*/
+        }
+        /* Se a conversão não resultou em 1 número ou os número é diferente de 1 */
+        if (leitura_valida != 1 || opcao != 1) {
+            printf("\033[38;5;196mOpção inválida! Digite 1 para iniciar o jogo.\033[0m\n"); /*Imprime erro*/
+            delay_ms(1000); /*Pequeno delay para a mensagem ser visível*/
+        }
 
         if (opcao == 1) {
             do {
@@ -216,27 +228,46 @@ void executar_menu() {
                 char input[10];
                 int conversao = 0;
                 
-                fflush(stdin); /* Limpa o buffer de entrada antes de ler*/
+                fflush(stdin); /*Limpa o buffer de entrada antes de ler*/
                 
-                if (fgets(input, sizeof(input), stdin) != NULL) { /* Lê a entrada como string*/
-
-                    conversao = sscanf(input, "%dx%d", &linhas, &colunas);  /*Tenta converter a entrada no formato desejado*/
+                if (fgets(input, sizeof(input), stdin) != NULL) { /*Lê a entrada como string*/
+                    conversao = sscanf(input, "%dx%d", &linhas, &colunas);  /*Tenta converter a entrada no formato desejado retornando a quantidade de numeros no formato desejado*/
                 }
                 
                 limpar_tela();
                 
-                /* Se a conversão não resultou em 2 números ou os números estão fora do intervalo*/
+                /* Se a conversão não resultou em 2 números ou os números não estão no formato desejado */
                 if (conversao != 2) {
-                    printf("\033[38;5;196mFormato inválido. Use o formato LinhaxColuna (exemplo: 5x5)\033[0m\n");
-                    delay_ms(1500); /*Pequeno delay para a mensagem ser visível*/
+                    printf("\033[38;5;196mFormato inválido. Use o formato LinhaxColuna (exemplo: 5x5)\033[0m\n"); /*Imprime erro*/
+                    delay_ms(1000); /*Pequeno delay para a mensagem ser visível*/
                 }
                 
             } while (linhas < 5 || colunas < 5 || linhas > 26 || colunas > 40);
 
+            printf("\033[38;5;196mCaso tenha inserido uma dimensão muito grande, recomendo deixar em tela cheia.\033[0m\n");
+            printf("\033[0m\n");
+            printf("\033[38;5;196m● Se o campo for grande a aparecer antes de por em tela cheia:\033[0m\n");
+            printf("\033[38;5;196m    ->Ajuste o tamanho da janela do terminal com o mouse e depois ative a tela cheia.\033[0m\n");
+            delay_ms(10000);
+
             do {
+                
                 menu_quantidade_minas(linhas, colunas, &maxima);
-                scanf("%d", &minas);
+                char input[10];
+                int leitura_valida = 0;
+    
+                fflush(stdin);  /* Limpa o buffer de entrada antes de ler*/
+                if (fgets(input, sizeof(input), stdin) != NULL) { /*Lê a entrada como string*/
+                    leitura_valida = sscanf(input, "%d", &minas); /*Tenta converter a entrada no formato desejado retornando a quantidade do formato desejado*/
+                }
+    
                 limpar_tela();
+                
+                /* Se a conversão não resultou em 1 número ou os números não estão no intervalo pedido */
+                if (leitura_valida != 1 || minas < 7 || minas > maxima) {  
+                    printf("\033[38;5;196mNúmero inválido! Digite um número entre 7 e %d.\033[0m\n", maxima); /*Imprime erro*/
+                    delay_ms(1000);
+                }
             } while (minas < 7 || minas > maxima);
 
             desenhar_campo(linhas, colunas);
