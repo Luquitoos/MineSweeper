@@ -198,8 +198,11 @@ void menu_quantidade_minas(int linhas, int colunas, int *maxima) {
 }
 
 void executar_menu() {
-    int opcao, dimensao, minas, linhas, colunas;
+    int opcao = 0, dimensao = 0, minas = 0, linhas = 0, colunas = 0;
     int maxima = 7;
+    char input[10];
+    int leitura_valida = 0;
+    int conversao = 0;
 
     do {
         configurar_terminal();
@@ -207,9 +210,6 @@ void executar_menu() {
         imprimir_titulo();
         imprimir_creditos();
         imprimir_start_game();
-        
-        char input[10];
-        int leitura_valida = 0;
     
         fflush(stdin); /*Limpa o buffer de entrada antes de ler*/
 
@@ -225,8 +225,6 @@ void executar_menu() {
         if (opcao == 1) {
             do {
                 menu_dimensoes();
-                char input[10];
-                int conversao = 0;
                 
                 fflush(stdin); /*Limpa o buffer de entrada antes de ler*/
                 
@@ -248,13 +246,10 @@ void executar_menu() {
             printf("\033[0m\n");
             printf("\033[38;5;196m● Se o campo for grande a aparecer antes de por em tela cheia:\033[0m\n");
             printf("\033[38;5;196m    ->Ajuste o tamanho da janela do terminal com o mouse e depois ative a tela cheia.\033[0m\n");
-            delay_ms(10000);
+            delay_ms(8000);
 
             do {
-                
                 menu_quantidade_minas(linhas, colunas, &maxima);
-                char input[10];
-                int leitura_valida = 0;
     
                 fflush(stdin);  /* Limpa o buffer de entrada antes de ler*/
                 if (fgets(input, sizeof(input), stdin) != NULL) { /*Lê a entrada como string*/
