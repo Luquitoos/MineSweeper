@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <time.h>
 #include <locale.h>
-#include <math.h>
 
 #ifdef _WIN32
     #include <windows.h>
@@ -186,8 +185,8 @@ void menu_dimensoes() {
 void menu_quantidade_minas(int linhas, int colunas, int *maxima) {
     limpar_tela();
     
-    if (floor((linhas*colunas)/5) > 7){
-        *maxima = floor((linhas*colunas)/5);
+    if (((linhas*colunas)/5) > 7){
+        *maxima = (linhas*colunas)/5;
     }   
     
     printf("\033[38;5;46m"); 
@@ -246,7 +245,7 @@ void executar_menu() {
             printf("\033[0m\n");
             printf("\033[38;5;196m● Se o campo for grande a aparecer antes de por em tela cheia:\033[0m\n");
             printf("\033[38;5;196m    ->Ajuste o tamanho da janela do terminal com o mouse e depois ative a tela cheia.\033[0m\n");
-            delay_ms(8000);
+            delay_ms(6000);
 
             do {
                 menu_quantidade_minas(linhas, colunas, &maxima);
