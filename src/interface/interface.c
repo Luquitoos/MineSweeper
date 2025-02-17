@@ -111,8 +111,8 @@ void cabeca_jogo() {
 }
 
 void desenhar_jogo(Jogo* jogo) {
-    int linhas = jogo->linha;
-    int colunas = jogo->colunas;
+    int linhas = jogo->largura;
+    int colunas = jogo->altura;
 
     configurar_terminal();
     limpar_tela();

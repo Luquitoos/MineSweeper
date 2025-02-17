@@ -8,7 +8,7 @@ typedef struct {
     int altura;
     int maximoDeMinas;
     int minasRestantes;
-    int actions; // Conta ações do jogador, pode ser relevante em algum momento.
+    int quantidadeJogadas; // Conta ações do jogador, pode ser relevante em algum momento.
     int jogo_ativo;
     Tabuleiro* tabuleiro; // Ponteiro para o tabuleiro
 } Jogo;
@@ -19,11 +19,12 @@ typedef struct {
  */
 Jogo* iniciar_jogo(
     int largura,
-    int altura
+    int altura,
+    int quantidadeMinas
 );
 
 /**
- * Processa uma ação do
+ * Processa uma ação do jogo.
  */
 void processar_acao(Jogo* jogo, int acao);
 
