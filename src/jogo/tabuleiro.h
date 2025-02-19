@@ -51,7 +51,7 @@ int calcular_minas_adjacentes(
  * Revela uma posição do tabuleiro. 
  * @param tabuleiro Ponteiro para o tabuleiro do jogo. 
  */
-void revelar_campo(
+int revelar_campo(
     Tabuleiro* tabuleiro,
     int* jogadasTotais,
     char linha,
@@ -59,10 +59,25 @@ void revelar_campo(
 );
 
 /**
+ * Executa uma busca usando BFS para encontrar uma posição de uma
+ * possível bomba.
+ * 
+ * O algoritmo considera um tabuleiro como um grafo e verifica se
+ * a quantidade de bombas adjacentes é igual ao número de posições
+ * não reveladas adjacentes. Se for, é uma bomba. Se não, aleatoriza
+ * uma posição aleatória adjacente não revelada.
+ */
+char* obter_dica(
+    Tabuleiro* tabuleiro
+);
+
+void distribuir_bombas(Tabuleiro* tabuleiro);
+
+/**
  * Defina uma bandeira em uma posição. 
  * @param tabuleiro Ponteiro para o tabuleiro do jogo. 
  */
-void definir_bandeira(
+int definir_bandeira(
     Tabuleiro* tabuleiro,
     char linha,
     int coluna

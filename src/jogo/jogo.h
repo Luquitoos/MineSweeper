@@ -26,7 +26,8 @@ Jogo* iniciar_jogo(
 /**
  * Processa uma ação do jogo.
  */
-void processar_acao(Jogo* jogo, int acao);
+int processar_acao(Jogo* jogo, int acao);
+int calcular_maximo_minas(int largura, int altura);
 
 /**
  * Abandona um jogo, libera a memória e redireciona o 

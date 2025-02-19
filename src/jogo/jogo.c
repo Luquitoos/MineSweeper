@@ -1,8 +1,11 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <math.h>
 
 #include "jogo.h"
 #include "tabuleiro.h"
+
+#define MAX(a, b) ((a) > (b) ? (a) : (b))
 
 void exibir_erro(int codigo_erro) {
     switch (codigo_erro) {
@@ -27,11 +30,8 @@ void exibir_erro(int codigo_erro) {
     }
 }
 
-int calcular_maximo_minas(
-    int largura,
-    int altura
-) {
-    return (largura * altura) / 5;
+int calcular_maximo_minas(int largura, int altura) {
+    return MAX(7, (int) floor((largura * altura) / 5.0));
 }
 
 Jogo* iniciar_jogo(
@@ -48,6 +48,7 @@ Jogo* iniciar_jogo(
     int maxMinas = calcular_maximo_minas(largura, altura);
     if (quantidadeMinas > maxMinas) {
         exibir_erro(3);
+        free(novo_jogo);
         return NULL;
     }
 
@@ -62,11 +63,31 @@ Jogo* iniciar_jogo(
     return novo_jogo;
 }
 
-void processar_acao(Jogo* jogo, int acao) {
-    // ...
+int processar_acao(Jogo* jogo, int acao) {
+    int num, tamanho;
+    char letra, jogada;
+
+    printf("Realize sua ação: \n");
+    scanf(" %c", &jogada);
+    if(jogada == '#') {
+        scanf(" %c %d", &letra, &num);
+        definir_bandeira(jogo->tabuleiro, letra, num);
+    } else if(jogada == '!') {
+        //desmarcar
+        scanf(" %c %d",&letra, &num);
+        printf("desmarcar");
+    } else {
+        //abrir
+        letra = jogada;
+        scanf(" %d", &num);
+        revelar_campo(jogo->tabuleiro, 0, letra, num);
+        //função para finalizar
+    }
+
+    return 1;
 }
 
 void finalizar_jogo(Jogo* jogo, int causa) {
     free(jogo->tabuleiro);
-    free(jogo);
+    free(jogo); 
 }

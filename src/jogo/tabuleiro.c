@@ -69,7 +69,6 @@ No* obter_no(Tabuleiro* tabuleiro, char linha, int coluna) {
     } else if (linha >= 'a' && linha <= 'z') {
         indice_linha = linha - 'a';
     } else {
-        
         return NULL;
     }
 
@@ -111,39 +110,6 @@ int calcular_minas_adjacentes(
     return total;
 }
 
-// 0 -> sucesso
-// os outros códigos de erro estão relacionados com o arquivo 'jogo.c'
-int revelar_campo(
-    Tabuleiro* tabuleiro,
-    int* jogadasTotais,
-    char linha,
-    int coluna
-) {
-    No* no = obter_no(tabuleiro, linha, coluna);
-
-    // Esse erro só irá acontecer se o tabuleiro não tiver sido inicializado.
-    // Na implementação adequada, é impossível, mas é boa verificação por segurança.
-    if (no == NULL)
-        return -1;
-    
-    if (no->revelado)
-        return 4;
-
-    no->revelado = 1;
-
-    if (jogadasTotais == 0)
-        // A distribuição de bombas acontece APÓS a primeira jogada.
-        distribuir_bombas(tabuleiro);
-    
-    no->total_minas_adjacentes = calcular_minas_adjacentes(tabuleiro, linha, coluna);
-    
-    if (no->total_minas_adjacentes == 0) {
-        // revela os adjacentes que tem 0 bombas adjacentes
-    }
-
-    (*jogadasTotais)++;
-    return 0;
-}
 
 void distribuir_bombas(
     Tabuleiro* tabuleiro
@@ -181,6 +147,42 @@ void distribuir_bombas(
     free(indices);
 }
 
+
+// 0 -> sucesso
+// os outros códigos de erro estão relacionados com o arquivo 'jogo.c'
+int revelar_campo(
+    Tabuleiro* tabuleiro,
+    int* jogadasTotais,
+    char linha,
+    int coluna
+) {
+    No* no = obter_no(tabuleiro, linha, coluna);
+
+    // Esse erro só irá acontecer se o tabuleiro não tiver sido inicializado.
+    // Na implementação adequada, é impossível, mas é boa verificação por segurança.
+    if (no == NULL)
+        return -1;
+    
+    if (no->revelado)
+        return 4;
+
+    no->revelado = 1;
+
+    if (jogadasTotais == 0)
+        // A distribuição de bombas acontece APÓS a primeira jogada.
+        distribuir_bombas(tabuleiro);
+    
+    no->total_minas_adjacentes = calcular_minas_adjacentes(tabuleiro, linha, coluna);
+    
+    if (no->total_minas_adjacentes == 0) {
+        // revela os adjacentes que tem 0 bombas adjacentes
+    }
+
+    (*jogadasTotais)++;
+    return 0;
+}
+
+
 int definir_bandeira(
     Tabuleiro* tabuleiro,
     char linha,
@@ -194,6 +196,22 @@ int definir_bandeira(
         return -1;
 
     no->possui_bandeira = 1;
+    return 0;
+}
+
+int remover_bandeira(
+    Tabuleiro* tabuleiro,
+    char linha,
+    int coluna
+) {
+    No* no = obter_no(tabuleiro, linha, coluna);
+
+    // Esse erro só irá acontecer se o tabuleiro não tiver sido inicializado.
+    // Na implementação adequada, é impossível, mas é boa verificação por segurança.
+    if (no == NULL)
+        return -1;
+
+    no->possui_bandeira = 0;
 
     return 0;
 }

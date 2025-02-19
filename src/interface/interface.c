@@ -3,30 +3,29 @@
 #include <locale.h>
 
 #include "interface.h"
-#include "jogo.h"
 
 #ifdef _WIN32
-    #include <windows.h>
+    #include <windows.h> 
 #endif
 
 void configurar_terminal() {
     setlocale(LC_ALL, "en_US.UTF-8");  /*Configura a Linux e Mac para UTF-8, que suporta os simbolos*/
 
-    #ifdef _WIN32
-        SetConsoleOutputCP(65001);  /*Configura o terminal do Windows para UTF-8, que suporta os simbolos*/
-    #endif
+#ifdef _WIN32
+    SetConsoleOutputCP(65001);  /*Configura o terminal do Windows para UTF-8, que suporta os simbolos*/
+#endif
 }
 
 void limpar_tela() {
-    printf("\033[H\033[J");
+    printf("\033[H\033[J");  /*limpa tela*/
 }
 
-void exibir_quadrado_branco() {
-    printf("\033[48;5;154;38;5;24m🔲 \033[0m");
+void quadrados() {
+    printf("\033[48;5;154;38;5;24m🔲 \033[0m"); /*mostra o quadrado do campo*/
 }
 
-void exibir_bandeira() {
-    printf("\033[48;5;154;38;5;196m🚩 \033[0m");
+void desenhar_bandeira() {
+    printf("\033[48;5;154;38;5;196m🚩 \033[0m"); /*mostra o quadrado de Bandeira */
 }
 
 void delay_ms(int milliseconds) { /*Função auxiliar para a animação da função mina_explosiva_animada*/
@@ -36,17 +35,21 @@ void delay_ms(int milliseconds) { /*Função auxiliar para a animação da funç
     nanosleep(&ts, NULL);
 }
 
-void exibir_quadrado_branco_espaco_vazio_ou_numerico(int num_minas_proximas) { /*Cria o quadrado clicado sem mina, dependendo do numero de minas proximas ele vai ser vazio ou vai ter um numero de minas proximas*/
+void quadrados_espaco_vazio_ou_numerico(int num_minas_proximas) { /*Cria o quadrado clicado sem mina, dependendo do numero de minas proximas ele vai ser vazio ou vai ter um numero de minas proximas*/
     if (num_minas_proximas == 0) {
         printf("\033[48;5;58m   \033[0m");
     } else {    
         int cor;
         switch(num_minas_proximas) {
-            case 1: cor = 81;  break;  
-            case 2: cor = 46;  break;  
-            case 3: cor = 214; break;  
-            case 4: cor = 201; break;  
-            default: cor = 15;         
+            case 1: cor = 81;  break;  /*Azul*/
+            case 2: cor = 46;  break;  /* Verde */
+            case 3: cor = 214; break;  /* Vermelho */
+            case 4: cor = 57;  break;  /* Azul escuro */
+            case 5: cor = 124; break;  /* Vermelho escuro */
+            case 6: cor = 37;  break;  /* Ciano */
+            case 7: cor = 53;  break;  /* Roxo */
+            case 8: cor = 240; break;  /* Cinza escuro */
+            default: cor = 15;         /* Branco (caso padrão) */  
         }
         printf("\033[48;5;58;38;5;%dm %d \033[0m", cor, num_minas_proximas);
     }
@@ -71,7 +74,7 @@ void imprimir_coordenadas_superiores(int colunas) { /*Imprime as coodernadas de 
     printf("\n");
 }
 
-void imprimir_linha_horizontal(int colunas) { /*Imprime as coodernadas de linha, que são as Letras, na parte esquerda do campo do campo (FUNÇÃO AUXILIAR DE DESENHAR CAMPO)*/
+void imprimir_linha_horizontal(int colunas) { /*Imprime as linhas que cortam o campo (FUNÇÃO AUXILIAR DE DESENHAR CAMPO)*/
     printf("   \033[38;5;27m╔"); 
     for (int i = 0; i < colunas; i++) {
         printf("═══"); 
@@ -101,40 +104,40 @@ void imprimir_linha_final(int colunas) { /*Funçao auxiliar do desenhar campo qu
 void cabeca_jogo() {
     printf("\033[38;5;226m");
     printf("\n");
-    printf("     ██╗  ██╗ █████╗ ██╗   ██╗███████╗    ███████╗██╗   ██╗███╗   ██╗  \n");
-    printf("     ██║  ██║██╔══██╗██║   ██║██╔════╝    ██╔════╝██║   ██║████╗  ██║ \n");
-    printf("     ███████║███████║██║   ██║█████╗      █████╗  ██║   ██║██╔██╗ ██║ \n");
-    printf("     ██╔══██║██╔══██║╚██╗ ██╔╝██╔══╝      ██╔══╝  ██║   ██║██║╚██╗██║  \n");
-    printf("     ██║  ██║██║  ██║ ╚████╔╝ ███████╗    ██║     ╚██████╔╝██║ ╚████║   \n");
-    printf("     ╚═╝  ╚═╝╚═╝  ╚═╝  ╚═══╝  ╚══════╝    ╚═╝      ╚═════╝ ╚═╝  ╚═══╝  \n");
+    printf("     ██╗  ██╗ █████╗ ██╗   ██╗███████╗    ███████╗██╗   ██╗███╗   ██╗   ╔═══════════════════════════╗\n");
+    printf("     ██║  ██║██╔══██╗██║   ██║██╔════╝    ██╔════╝██║   ██║████╗  ██║   ║ Open: [Letter][Number]    ║\n");
+    printf("     ███████║███████║██║   ██║█████╗      █████╗  ██║   ██║██╔██╗ ██║   ║ Flag: #[Letter][Number]   ║\n");
+    printf("     ██╔══██║██╔══██║╚██╗ ██╔╝██╔══╝      ██╔══╝  ██║   ██║██║╚██╗██║   ║ Unflag: ![Letter][Number] ║\n");
+    printf("     ██║  ██║██║  ██║ ╚████╔╝ ███████╗    ██║     ╚██████╔╝██║ ╚████║   ║ Tip: Press Enter          ║\n");
+    printf("     ╚═╝  ╚═╝╚═╝  ╚═╝  ╚═══╝  ╚══════╝    ╚═╝      ╚═════╝ ╚═╝  ╚═══╝   ╚═══════════════════════════╝\n");
     printf("\033[0m\n");
 }
 
-void desenhar_jogo(Jogo* jogo) {
-    int linhas = jogo->largura;
-    int colunas = jogo->altura;
-
+void desenhar_campo(Tabuleiro* tabuleiro, int linhas, int colunas) { /*Cria o Campo Minado (A interface dele)*/
     configurar_terminal();
     limpar_tela();
     cabeca_jogo();
     
     imprimir_coordenadas_superiores(colunas);
+    
     imprimir_linha_horizontal(colunas);
-
+    
     for (int i = 0; i < linhas; i++) {
-        printf("\033[38;5;255m %c \033[0m", 'A' + i);
-        printf("\033[38;5;27m║\033[0m");
 
+        printf("\033[38;5;255m %c \033[0m", 'A' + i);
+        
+        printf("\033[38;5;27m║\033[0m"); 
         for (int j = 0; j < colunas; j++) {
-            exibir_quadrado_branco();
+            No* no = obter_no(tabuleiro, 'A' + i, j + 1);
+            quadrados();
             if (j < colunas - 1) {
-                printf("\033[38;5;94m║\033[0m");
+                printf("\033[38;5;94m║\033[0m"); 
             } else {
-                printf("\033[38;5;27m║\033[0m");
+                printf("\033[38;5;27m║\033[0m"); 
             }
         }
         printf("\n");
-
+        
         if (i < linhas - 1) {
             imprimir_linha_intermediaria(colunas);
         }
@@ -142,17 +145,16 @@ void desenhar_jogo(Jogo* jogo) {
     imprimir_linha_final(colunas);
 }
 
-void imprimir_titulo()
-{
+void imprimir_titulo() {
     printf("\033[38;5;226m");
     printf("\n");
-    printf("     ███╗   ███╗██╗███╗   ██╗███████╗███████╗██╗    ██╗███████╗███████╗██████╗ ███████╗██████╗  \n");
-    printf("     ████╗ ████║██║████╗  ██║██╔════╝██╔════╝██║    ██║██╔════╝██╔════╝██╔══██╗██╔═══ ╝██╔══██╗ \n");
-    printf("     ██╔████╔██║██║██╔██╗ ██║█████╗  ███████╗██║ █╗ ██║█████╗  █████╗  ██████╔╝█████╗  ██████╔╝ \n");
-    printf("     ██║╚██╔╝██║██║██║╚██╗██║██╔══╝  ╚════██║██║███╗██║██╔══╝  ██╔══╝  ██╔═══╝ ██╔══╝  ██╔══██╗  \n");
-    printf("     ██║ ╚═╝ ██║██║██║ ╚████║███████╗███████║╚███╔███╔╝███████╗███████╗██║     ███████╗██║  ██║   \n");
-    printf("     ╚═╝     ╚═╝╚═╝╚═╝  ╚═══╝╚══════╝╚══════╝ ╚══╝╚══╝ ╚══════╝╚══════╝╚═╝     ╚══════╝╚═╝  ╚═╝  \n");
-    printf("                                                UFC                                                       \n");
+    printf("     ███╗   ███╗██╗███╗   ██╗███████╗███████╗██╗    ██╗███████╗███████╗██████╗ ███████╗██████╗\n");
+    printf("     ████╗ ████║██║████╗  ██║██╔════╝██╔════╝██║    ██║██╔════╝██╔════╝██╔══██╗██╔═══ ╝██╔══██╗\n");
+    printf("     ██╔████╔██║██║██╔██╗ ██║█████╗  ███████╗██║ █╗ ██║█████╗  █████╗  ██████╔╝█████╗  ██████╔╝\n");
+    printf("     ██║╚██╔╝██║██║██║╚██╗██║██╔══╝  ╚════██║██║███╗██║██╔══╝  ██╔══╝  ██╔═══╝ ██╔══╝  ██╔══██╗\n");
+    printf("     ██║ ╚═╝ ██║██║██║ ╚████║███████╗███████║╚███╔███╔╝███████╗███████╗██║     ███████╗██║  ██║\n");
+    printf("     ╚═╝     ╚═╝╚═╝╚═╝  ╚═══╝╚══════╝╚══════╝ ╚══╝╚══╝ ╚══════╝╚══════╝╚═╝     ╚══════╝╚═╝  ╚═╝\n");
+    printf("                                                UFC\n");
     printf("\033[0m\n");
 }
 
@@ -173,89 +175,130 @@ void imprimir_start_game() {
     printf("\033[0m\n");
 }
 
-void imprimir_opcao_dimensao(int numero, const char* dimensao) {
-    printf("\033[38;5;46m");
-    printf("                                ╔════════════════════════════════╗\n");
-    printf("                                ║      %d. %s                  ║\n", numero, dimensao);
-    printf("                                ╚════════════════════════════════╝\n");
-    printf("\033[0m\n");
-}
-
 void menu_dimensoes() {
     limpar_tela();
     printf("\033[38;5;27m");
     printf("\n                  ╔═══════════════════════════════════════════════════════════╗\n");
-    printf("                  ║  Selecione a Dimensão do Campo (Digite a opção de 1 a 7)  ║\n");
+    printf("                  ║  Digite a Dimensão do Campo no Formato (Linha x Coluna):  ║\n");
     printf("                  ╚═══════════════════════════════════════════════════════════╝\n\n");
     printf("\033[0m");
-    
-    imprimir_opcao_dimensao(1, "9x9");
-    imprimir_opcao_dimensao(2, "16x16");
-    imprimir_opcao_dimensao(3, "16x30");
-    imprimir_opcao_dimensao(4, "18x25");
-    imprimir_opcao_dimensao(5, "20x30");
-    imprimir_opcao_dimensao(6, "22x35");
-    imprimir_opcao_dimensao(7, "26x40");
 }
 
-void menu_quantidade_minas() {
+void menu_quantidade_minas(int linhas, int colunas, int *maxima) {
     limpar_tela();
+    
+    *maxima = calcular_maximo_minas(colunas, linhas);
+
     printf("\033[38;5;46m"); 
     printf("\n                                ╔══════════════════════════════════╗\n");
-    printf("                                ║ Digite o número de minas (1-35): ║\n");
+    printf("                                ║ Digite o número de minas (7-%d): ║\n", *maxima);
     printf("                                ╚══════════════════════════════════╝\n");
     printf("\033[0m\n");
 }
 
-void executar_menu() {
-    int opcao, dimensao, minas;
+void menu_novo_jogo(Jogo* jogoAtual) 
+{
+    int opcao = 0, dimensao = 0, minas = 0, linhas = 0, colunas = 0;
+    int maxima = 7;
+    char input[10];
+    int leitura_valida = 0;
+    int conversao = 0;
 
-    do {
-        configurar_terminal();
-        limpar_tela();
-        imprimir_titulo();
-        imprimir_creditos();
-        imprimir_start_game();
-        
-        scanf("%d", &opcao);
+    imprimir_titulo();
+    imprimir_creditos();
+    imprimir_start_game();
 
-        if (opcao == 1) {
-            do {
-                menu_dimensoes();
-                scanf("%d", &dimensao);
-                limpar_tela();
-            } while (dimensao < 1 || dimensao > 7);
+    fflush(stdin); /*Limpa o buffer de entrada antes de ler*/
 
-            do {
-                menu_quantidade_minas();
-                scanf("%d", &minas);
-                limpar_tela();
-            } while (minas < 1 || minas > 35);
+    if (fgets(input, sizeof(input), stdin) != NULL)
+    {                                                 /*Lê a entrada como string*/
+        leitura_valida = sscanf(input, "%d", &opcao); /*Tenta converter a entrada no formato desejado retornando a quantidade do formato desejado*/
+    }
 
-            int linhas, colunas;
-            switch (dimensao) {
-                case 1: linhas = 9; colunas = 9; break;
-                case 2: linhas = 16; colunas = 16; break;
-                case 3: linhas = 16; colunas = 30; break;
-                case 4: linhas = 18; colunas = 25; break;
-                case 5: linhas = 20; colunas = 30; break;
-                case 6: linhas = 22; colunas = 35; break;
-                case 7: linhas = 26; colunas = 40; break;
-                default: linhas = 9; colunas = 9;
-            }
+    /* Se a conversão não resultou em 1 número ou os número é diferente de 1 */
+    if (leitura_valida != 1 || opcao != 1) {
+        printf("\033[38;5;196mOpção inválida! Digite 1 para iniciar o jogo.\033[0m\n"); /*Imprime erro*/
+        delay_ms(2000);
+        executar_menu(NULL);
+        return;                                                   /*Pequeno delay para a mensagem ser visível*/
+    }
 
-            desenhar_campo(linhas, colunas);
-            break; /*Seria a partir daqui a implementacao da estrutura de dados, voce vai tirar esse break e comecar a implementacao usando as funcoes de interface que criei
-            
-            Aqui depois que o campo foi criado voce irá associar//distribuir os nós na matriz criada (com a informaçao se é bomba ou não)
-            
-            De acordo com o que o usuario vai selecionando na matriz voce vai acessar o nó e descobrir se é mina ou não. 
-            
-            Se for mina voce vai fazer com que o quadrado vire bomba, fazendo o mesmo para todas outras bombas e transformando os exibir_quadrado_branco nao bombas em vazios
-            
-            Caso não seja bomba, voce vai fazer o quadrado na posicao selecionada virar quadrado vazio e alguns ao redor também, o quadrado vazio recebe a quantidade de minas proximas
-            se for 0 ele fica vazio e se for 1 a 4 ele adota uma numeraçao
-            */
+    // Caso a entrada seja válida, executa o código abaixo.
+    do
+    {
+        menu_dimensoes();
+
+        fflush(stdin); /*Limpa o buffer de entrada antes de ler*/
+
+        if (fgets(input, sizeof(input), stdin) != NULL)
+        {                                                          /*Lê a entrada como string*/
+            conversao = sscanf(input, "%dx%d", &linhas, &colunas); /*Tenta converter a entrada no formato desejado retornando a quantidade de numeros no formato desejado*/
         }
-    } while (opcao != 1);
+
+        limpar_tela();
+
+        /* Se a conversão não resultou em 2 números ou os números não estão no formato desejado */
+        if (conversao != 2)
+        {
+            printf("\033[38;5;196mFormato inválido. Use o formato LinhaxColuna (exemplo: 5x5)\033[0m\n"); /*Imprime erro*/
+            delay_ms(2000);                                                                                 /*Pequeno delay para a mensagem ser visível*/
+        }
+
+    } while (linhas < 5 || colunas < 5 || linhas > 26 || colunas > 40);
+
+    printf("\033[38;5;196mCaso tenha inserido uma dimensão muito grande, recomendo deixar em tela cheia.\033[0m\n");
+    printf("\033[0m\n");
+    printf("\033[38;5;196m● Se o campo for grande a aparecer antes de por em tela cheia:\033[0m\n");
+    printf("\033[38;5;196m    ->Ajuste o tamanho da janela do terminal com o mouse e depois ative a tela cheia.\033[0m\n");
+    delay_ms(6000);
+
+    do
+    {
+        menu_quantidade_minas(linhas, colunas, &maxima);
+
+        fflush(stdin); /* Limpa o buffer de entrada antes de ler*/
+        if (fgets(input, sizeof(input), stdin) != NULL)
+        {                                                 /*Lê a entrada como string*/
+            leitura_valida = sscanf(input, "%d", &minas); /*Tenta converter a entrada no formato desejado retornando a quantidade do formato desejado*/
+        }
+
+        limpar_tela();
+
+        /* Se a conversão não resultou em 1 número ou os números não estão no intervalo pedido */
+        if (leitura_valida != 1 || minas < 7 || minas > maxima)
+        {
+            printf("\033[38;5;196mNúmero inválido! Digite um número entre 7 e %d.\033[0m\n", maxima); /*Imprime erro*/
+            delay_ms(1000);
+        }
+    } while (minas < 7 || minas > maxima);
+
+    jogoAtual = iniciar_jogo(colunas, linhas, minas);
+    executar_menu(jogoAtual);
+};
+
+void menu_acao(Jogo* jogoAtual) {
+    int acao;
+
+    Tabuleiro* tabuleiro = jogoAtual->tabuleiro;
+    int largura = jogoAtual->largura;
+    int altura = jogoAtual->altura;
+
+    desenhar_campo(tabuleiro,largura, altura);
+    acao = 0;
+    while(acao != -1) {
+        processar_acao(jogoAtual, acao);
+        desenhar_campo(tabuleiro,largura, altura);
+        acao++;
+    }
+};
+
+void executar_menu(Jogo* jogoAtual) {
+    configurar_terminal();
+    limpar_tela();
+        
+    if (jogoAtual == NULL) {
+        menu_novo_jogo(jogoAtual);
+    } else {
+        menu_acao(jogoAtual);
+    }
 }
