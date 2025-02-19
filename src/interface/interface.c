@@ -130,15 +130,7 @@ void desenhar_campo(Tabuleiro* tabuleiro, int linhas, int colunas) { /*Cria o Ca
         printf("\033[38;5;27m║\033[0m"); 
         for (int j = 0; j < colunas; j++) {
             No* no = obter_no(tabuleiro, 'A' + i, j + 1);
-            if (no == NULL) {
-                printf("Erro ao acessar a célula [%d][%d]\n", i, j);
-            } else {
-                // Imprime o endereço da célula:
-                printf("Endereço da célula [%d][%d]: %p\n", i, j, (void*)no);
-                // Imprime o valor de possui_bandeira:
-                printf("possui_bandeira: %d\n", no->possui_bandeira);
-            }
-            
+            quadrados();
             if (j < colunas - 1) {
                 printf("\033[38;5;94m║\033[0m"); 
             } else {
