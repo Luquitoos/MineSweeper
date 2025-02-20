@@ -253,13 +253,22 @@ int revelar_campo(Tabuleiro* tabuleiro, int* jogadasTotais, char linha, int colu
 void exibir_bombas(Tabuleiro* tabuleiro) {
     int jogadas;
     jogadas = 1;
+    // Primeiro calcula as minas adjacentes para todos os campos
     for (int i = 0; i < tabuleiro->altura; i++) {
         for (int j = 0; j < tabuleiro->largura; j++) {
             No* no = obter_no(tabuleiro, 'A' + i, j + 1);
-            
-            if (no && no->bomba == 1) {
+            if (no) {
+                no->total_minas_adjacentes = calcular_minas_adjacentes(tabuleiro, 'A' + i, j + 1);
+            }
+        }
+    }
+
+    // Depois revela todos os campos
+    for (int i = 0; i < tabuleiro->altura; i++) {
+        for (int j = 0; j < tabuleiro->largura; j++) {
+            No* no = obter_no(tabuleiro, 'A' + i, j + 1);
+            if (no) {
                 no->revelado = 1;
-                revelar_campo(tabuleiro, &jogadas, 'A' + 1, j + 1, 0);
             }
         }
     }
