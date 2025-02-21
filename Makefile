@@ -1,7 +1,7 @@
 all: campominado
 
 campominado: main.o src/interface/interface.o src/jogo/jogo.o src/jogo/tabuleiro.o
-	gcc main.o src/interface/interface.o src/jogo/jogo.o src/jogo/tabuleiro.o -o campominado
+	gcc main.o src/interface/interface.o src/jogo/jogo.o src/jogo/tabuleiro.o -o campominado -lm
 
 main.o: main.c src/jogo/jogo.h src/interface/interface.h
 	gcc -c main.c -Isrc/
