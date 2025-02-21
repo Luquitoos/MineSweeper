@@ -1,0 +1,7 @@
+{
+    "files.associations": {
+        "tabuleiro.h": "c",
+        "interface.h": "c",
+        "jogo.h": "c"
+    }
+}
