@@ -150,14 +150,13 @@ int processar_acao(Jogo* jogo) {
                 jogo->quantidadeJogadas++;
             }
 
-            if (resultado == 2) { // Acertou mina -> fim de jogo
+            if (resultado == 2) {
+                exibir_bombas(jogo->tabuleiro);
                 jogo->jogo_ativo = 0;
                 return 1;
             }
 
             if (jogo->jogo_ativo && vitoria(jogo->tabuleiro)) {
-                printf("vitoria? %d", (vitoria(jogo->tabuleiro)));
-
                 jogo->jogo_ativo = 0;
                 return 1;
             }
@@ -195,7 +194,6 @@ void finalizar_jogo(Jogo* jogo) {
     if (vitoria(jogo->tabuleiro)) {
         exibir_vitoria(jogo);
     } else {
-        exibir_bombas(jogo->tabuleiro);
         printf("\033[38;5;196m");
         printf("                       ╔══════════════════════════════════════╗\n");
         printf("                       ║        Você acertou uma mina!        ║\n");

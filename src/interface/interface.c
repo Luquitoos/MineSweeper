@@ -247,7 +247,7 @@ void menu_novo_jogo(Jogo* jogoAtual) {
     printf("\033[38;5;196m● Se o campo for grande e aparecer antes de por em tela cheia:\033[0m\n");
     printf("\033[38;5;196m● Ajuste o tamanho da janela do terminal com o mouse e depois ative a tela cheia.\033[0m\n");
     printf("\033[38;5;196m Aguarde......\033[0m\n");
-    delay_ms(500);
+    delay_ms(5000);
 
     while (1) {
         menu_quantidade_minas(linhas, colunas, &maxima);

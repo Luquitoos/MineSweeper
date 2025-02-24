@@ -535,6 +535,9 @@ int vitoria(Tabuleiro* tabuleiro) {
             No* no = &tabuleiro->matriz[i][j];
             // Se encontrar algum quadrado que não é bomba e não está revelado
             // então o jogo ainda não acabou
+            if(no->bomba && no->revelado)
+                return 0;
+            
             if(!no->bomba && !no->revelado)
                 return 0;
         }

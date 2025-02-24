@@ -33,11 +33,6 @@ void desenhar_quadrado();
 void desenhar_bandeira();
 
 /**
- * Aguarda um tempo determinado em milissegundos.
- */
-void delay_ms(int milliseconds);
-
-/**
  * Exibe um quadrado representando um espaço vazio ou numérico, dependendo da quantidade de minas próximas.
  */
 void quadrados_espaco_vazio_ou_numerico(int num_minas_proximas);
