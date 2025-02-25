@@ -2,6 +2,7 @@
     Organização do Trabalho, Interface.c, Makefile, reformulação e criação de algumas funções do Jogo.c e Tabuleiro.c, validação e Debug das funções do programa.
   Marcos Vinicius Pereira Araujo - 571042:
   Felipe Gabriel Lima Florindo - 569760:
+    Makefile, reformulação e criação de algumas funções de jogo.c, tabuleiro.c e interface.c.
 */
 
 #include <stdio.h>
