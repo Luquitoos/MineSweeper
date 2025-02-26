@@ -285,10 +285,10 @@ char* obter_posicao(No* no) {
         coluna++;
     }
 
-    char* posicao = (char*) malloc(4 * sizeof(char));
+    char* posicao = (char*) malloc(12 * sizeof(char));
     if (!posicao) return NULL;
 
-    snprintf(posicao, 4, "%c%d", 'A' + (linha - 1), coluna);
+    snprintf(posicao, 12, "%c%d", 'A' + (linha - 1), coluna);
     return posicao;
 }
 
