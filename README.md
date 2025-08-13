@@ -129,7 +129,7 @@ make clean
 
 
 ## Créditos
-- Lucas Magalhães Fontenele Bizeril — Organização, Interface, Makefile, Algumas funções do Tabuleiro, ajustes e validações.
+- Lucas Magalhães Fontenele Bizerril — Organização, Interface, Makefile, Algumas funções do Tabuleiro, ajustes e validações.
 - Marcos Vinicius Pereira Araujo — Estrutura de dados e funções de tabuleiro e jogo.
 - Felipe Gabriel Lima Florindo — Makefile e funções em Jogo/Tabuleiro/Interface.
 
