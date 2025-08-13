@@ -9,15 +9,15 @@ Implementação de um Minesweeper que roda no terminal, escrita em C, com interf
 
 
 ## Sumário
-- Sobre o projeto
-- Funcionalidades principais
-- Controles do jogo (entrada no terminal)
-- Como jogar (fluxo)
-- Dicas de jogo
-- Como compilar e executar
-- Estrutura do projeto
-- Compatibilidade e observações
-- Créditos
+- [Sobre o projeto](#sobre-o-projeto)
+- [Funcionalidades principais](#funcionalidades-principais)
+- [Controles do jogo (entrada no terminal)](#controles-do-jogo-entrada-no-terminal)
+- [Como jogar (fluxo)](#como-jogar-fluxo)
+- [Dicas de jogo](#dicas-de-jogo)
+- [Como compilar e executar](#como-compilar-e-executar)
+- [Estrutura do projeto](#estrutura-do-projeto)
+- [Compatibilidade e observações](#compatibilidade-e-observações)
+- [Créditos](#créditos)
 
 
 ## Sobre o projeto
@@ -79,49 +79,47 @@ Observações:
 
 
 ## Como compilar e executar
-Pré-requisitos:
-- GCC (ou Clang) e Make.
-- Terminal com suporte a ANSI e UTF-8.
+```bash
+# Linux/macOS
+make
+./campominado
 
-Compilação com Make (recomendado):
-- Linux/macOS:
-  - make
-  - ./campominado
-- Windows (MinGW/MSYS2):
-  - make (ou mingw32-make, dependendo da instalação)
-  - campominado.exe
+# ou, sem Make
+gcc main.c src/interface/interface.c src/jogo/jogo.c src/jogo/tabuleiro.c -Isrc -lm -o campominado
+./campominado
 
-Compilação manual (sem Make):
-- gcc main.c src/interface/interface.c src/jogo/jogo.c src/jogo/tabuleiro.c -Isrc -lm -o campominado
-- Execução: ./campominado (Linux/macOS) ou campominado.exe (Windows)
+# Windows (MinGW/MSYS2)
+make
+campominado.exe
 
-Limpar artefatos de build:
-- make clean
+# ou, sem Make
+gcc main.c src/interface/interface.c src/jogo/jogo.c src/jogo/tabuleiro.c -Isrc -lm -o campominado
+campominado.exe
 
-Notas:
-- O projeto linka com -lm (math). Em ambientes MinGW/MSYS2 isso é suportado por padrão.
-- Caso seu terminal não exiba corretamente as cores/emojis, veja a seção de compatibilidade abaixo.
+# Limpar artefatos de build
+make clean
+```
 
 
 ## Estrutura do projeto
-- main.c
-  - Ponto de entrada. Direciona para a interface (menus/fluxo do jogo).
-- src/interface/
-  - interface.h, interface.c
-    - Desenho do tabuleiro (cores, bordas, emojis), menus e cabeçalhos.
-    - Configuração de terminal (UTF-8 no Windows), limpeza de tela, animações.
-- src/jogo/
-  - jogo.h, jogo.c
-    - Estado do jogo (largura, altura, minas, jogadas, ativo).
-    - Processamento de entradas (abrir, bandeirar, dica, validações).
-    - Regras de término, vitória, mensagens e atrasos (delay).
-  - tabuleiro.h, tabuleiro.c
-    - Estruturas No e Tabuleiro (matriz e vizinhos).
-    - Distribuição de bombas, realocação na primeira jogada.
-    - Cálculo de minas adjacentes, revelar recursivo, bandeiras, vitória.
-    - Geração de dicas: identifica possíveis bombas adjacentes e sugere célula segura.
-- Makefile
-  - Alvos: campominado, clean. Compila os módulos com -Isrc e -lm.
+```
+.
+├─ Makefile                 # Build (alvos: campominado, clean)
+├─ README.md                # Documentação do projeto
+├─ main.c                   # Ponto de entrada: inicia menus e fluxo do jogo
+├─ src/
+│  ├─ interface/
+│  │  ├─ interface.c        # UI: desenho do tabuleiro, menus, animações, UTF-8/cores
+│  │  └─ interface.h
+│  └─ jogo/
+│     ├─ jogo.c             # Núcleo do jogo: comandos, dicas, estado e fim de jogo
+│     ├─ jogo.h
+│     ├─ tabuleiro.c        # Estruturas do tabuleiro, bombas, revelar recursivo, bandeiras, vitória
+│     └─ tabuleiro.h
+├─ .vscode/                 # Configurações do VS Code (opcional)
+├─ .qodo/                   # Metadados do assistente (ignorar)
+└─ .git/                    # Metadados do Git
+```
 
 
 ## Compatibilidade e observações
